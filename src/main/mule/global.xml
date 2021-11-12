@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+	xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/json-logger 
+http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd"
+>
+	<db:config
+		name="Database_Config"
+		doc:name="Database Config"
+		doc:id="a3836b3a-39ea-4390-8872-452c335d5e52"
+	>
+		<db:my-sql-connection
+			host="${db.host}"
+			port="${db.port}"
+			user="${db.username}"
+			password="${db.password}"
+			database="${db.database-name}" />
+	</db:config>
+	<global-property
+		doc:name="Global Property"
+		doc:id="1cc0e37c-2177-42b3-ba8b-e6522c8e8ccc"
+		name="mule.env"
+		value="dev" />
+	<configuration-properties
+		doc:name="Configuration properties"
+		doc:id="77b4b61c-13ba-402d-b098-2830824cd225"
+		file="${mule.env}.yaml" />
+	<http:listener-config name="bookmyshow-httpListenerConfig">
+		<http:listener-connection
+			host="0.0.0.0"
+			port="8081" />
+	</http:listener-config>
+	<apikit:config
+		name="bookmyshow-config"
+		api="resource::cdd0f708-6acf-4dab-b2ea-a31dd628ca55:bookmyshow:1.0.5:raml:zip:bookmyshow.raml"
+		outboundHeadersMapName="outboundHeaders"
+		httpStatusVarName="httpStatus" />
+	<json-logger:config
+		name="JSON_Logger_Config"
+		doc:name="JSON Logger Config"
+		doc:id="63420add-f5e9-4d1c-8cba-d8fbdffb2e12"
+		environment="${mule.env}"
+		parseContentFieldsInJsonOutput="false" />
+	<global-property
+		doc:name="Global Property"
+		doc:id="9ede935f-6e8a-44e8-b435-86e445ce4a09"
+		name="mule.env"
+		value="dev" />
+	<wsc:config
+		name="Web_Service_Consumer_Config"
+		doc:name="Web Service Consumer Config"
+		doc:id="5e118219-e9d2-422c-9e68-3437c0a83c63"
+	>
+		<wsc:connection
+			wsdlLocation="${soap.wsdlLocation}"
+			service="${soap.service}"
+			port="${soap.port}"
+			address="${soap.address}" />
+	</wsc:config>
+</mule>
