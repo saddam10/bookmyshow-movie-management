@@ -26,7 +26,11 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 			port="${db.port}"
 			user="${db.username}"
 			password="${db.password}"
-			database="${db.database-name}" />
+			database="${db.database-name}" >
+			<reconnection >
+				<reconnect frequency="${db.reconnection-strategy-frequency-ms}" count="${db.reconnection-strategy-attempts}" />
+			</reconnection>
+		</db:my-sql-connection>
 	</db:config>
 	<global-property
 		doc:name="Global Property"
@@ -39,8 +43,8 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 		file="${mule.env}.yaml" />
 	<http:listener-config name="bookmyshow-httpListenerConfig">
 		<http:listener-connection
-			host="0.0.0.0"
-			port="8081" />
+			host="${http.host}"
+			port="${http.port}" />
 	</http:listener-config>
 	<apikit:config
 		name="bookmyshow-config"
@@ -67,6 +71,11 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 			wsdlLocation="${soap.wsdlLocation}"
 			service="${soap.service}"
 			port="${soap.port}"
-			address="${soap.address}" />
+			address="${soap.address}" >
+			<reconnection >
+				<reconnect frequency="${soap.reconnection-strategy-frequency-ms}" count="${soap.reconnection-strategy-attempts}" />
+			</reconnection>
+			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+		</wsc:connection>
 	</wsc:config>
 </mule>

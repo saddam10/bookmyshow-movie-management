@@ -47,7 +47,7 @@ output application/json
 			doc:id="eae4d6d6-ccea-43fd-b519-b3e77b118672"
 			variableName="sql-query" />
 		<db:select
-			doc:name="Select"
+			doc:name="Get List Of Movies"
 			doc:id="1ada460c-08cd-42e5-bc4b-bd626e7e8587"
 			config-ref="Database_Config"
 		>
@@ -73,7 +73,7 @@ payload]]></ee:set-payload>
 				doc:id="908b4171-1db0-4088-8e26-c0c9a68577a5"
 			>
 				<flow-ref
-					doc:name="Error-Logger"
+					doc:name="Error Logger"
 					doc:id="7b6da58c-7920-46a9-a9e7-a8d46c5efe97"
 					name="Error-Logger" />
 			</on-error-continue>
@@ -85,7 +85,7 @@ payload]]></ee:set-payload>
 	>
 		<json-logger:logger doc:name="Start Log" doc:id="bdfa7478-e4a1-4419-ab41-f0bf08225626" config-ref="JSON_Logger_Config" message="Request received for GET/movies/{movie_id} endpoint"/>
 		<db:select
-			doc:name="Select"
+			doc:name="Get Details Of Movie"
 			doc:id="fe22c1d7-a11b-4f4d-aaa9-e24ac3c2a1fc"
 			config-ref="Database_Config"
 		>
@@ -127,7 +127,7 @@ payload[0]]]></ee:set-payload>
 	>
 		<json-logger:logger doc:name="Start Log" doc:id="d5278fa7-20f1-43d6-a302-127fd740175f" config-ref="JSON_Logger_Config" message="Request received for GET/schedules endpoint"/>
 		<db:select
-			doc:name="Select"
+			doc:name="Get Schedules"
 			doc:id="f663cdcd-22f3-445e-b340-ab993c279c2d"
 			config-ref="Database_Config"
 		>
@@ -148,7 +148,7 @@ and showSchedule.date = :date]]></db:sql>
 }]]]></db:input-parameters>
 		</db:select>
 		<ee:transform
-			doc:name="Transform Message"
+			doc:name="Transform Message To Response Payload"
 			doc:id="c1678474-78f7-46ea-bfc6-4623523720c2"
 		>
 			<ee:message>
@@ -191,7 +191,7 @@ payload map {
 	>
 		<json-logger:logger doc:name="Start Log" doc:id="22678850-f959-4400-b115-cd675798440f" config-ref="JSON_Logger_Config" message="Request received for POST/bookings endpoint"/>
 		<ee:transform
-			doc:name="Transform Message"
+			doc:name="Create Soap Request And Store Original Payload In Var"
 			doc:id="76de0070-9fa6-4a51-aaa9-a84691a86a19"
 		>
 			<ee:message>
@@ -226,14 +226,14 @@ output application/json
 payload]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<wsc:consume doc:name="Consume" doc:id="c29898db-0a68-4c1d-8c33-a331b7f751c1" config-ref="Web_Service_Consumer_Config" operation="bookTicket"/>
+		<wsc:consume doc:name="Consume Booking WS" doc:id="c29898db-0a68-4c1d-8c33-a331b7f751c1" config-ref="Web_Service_Consumer_Config" operation="bookTicket"/>
 		<choice
 			doc:name="Choice"
 			doc:id="e0c7610e-a793-49ce-a982-8d31a659fc70"
 		>
 			<when expression='#[payload.body.bookTicketResponse.success == "1"]'>
 				<ee:transform
-					doc:name="Transform Message"
+					doc:name="Transform Message To Response Payload"
 					doc:id="fcbc8816-8149-411c-b180-21444c47d0c7"
 				>
 					<ee:message>
@@ -263,7 +263,7 @@ output application/json
 			</when>
 			<otherwise>
 				<ee:transform
-					doc:name="Transform Message"
+					doc:name="Set Error Response"
 					doc:id="fb7dade7-081f-431a-9187-d8b3fabe30a4"
 				>
 					<ee:message>
@@ -299,7 +299,7 @@ payload.body.bookTicketResponse]]></ee:set-payload>
 	>
 		<json-logger:logger doc:name="Start Log" doc:id="cbb124b1-112b-49f6-9d81-8ba71ed2f8ec" config-ref="JSON_Logger_Config" message="Request received for GET/discounts endpoint"/>
 		<ee:transform
-			doc:name="Transform Message"
+			doc:name="Transform Message To Soap Request"
 			doc:id="97151f04-08a8-4761-8743-0eba6ba1dff5"
 		>
 			<ee:message>
@@ -316,9 +316,9 @@ ns ns0 http://localhost:8081/ticket-booking-service/
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<wsc:consume doc:name="Consume" doc:id="355282a4-be59-4f1c-b474-51db4745c291" config-ref="Web_Service_Consumer_Config" operation="getDiscount"/>
+		<wsc:consume doc:name="Consume Discount WS" doc:id="355282a4-be59-4f1c-b474-51db4745c291" config-ref="Web_Service_Consumer_Config" operation="getDiscount"/>
 		<ee:transform
-			doc:name="Transform Message"
+			doc:name="Transform Message To Response Payload"
 			doc:id="03871128-f1b5-4c19-86a0-1f3268343429"
 		>
 			<ee:message>
