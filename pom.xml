@@ -44,8 +44,8 @@
 						<properties>
 							<http.host>0.0.0.0</http.host>
 							<http.port>8081</http.port>
-							<anypoint.platform.client_id>d29d92d1941143cca879cb76710db32c</anypoint.platform.client_id>
-							<anypoint.platform.client_secret>e7ebF010eFA3444592D7dC78aF8d5584</anypoint.platform.client_secret>
+							<anypoint.platform.client_id>38ef566d83a043bb90d280195e9517e3</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>940286671262410398f934B457461bAf</anypoint.platform.client_secret>
 						</properties>
 					</cloudHubDeployment>
 					<sharedLibraries>
