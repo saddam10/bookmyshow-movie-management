@@ -25,6 +25,9 @@ soap:
   reconnection-strategy-frequency-ms : "2000"
   reconnection-strategy-attempts : "2"
   
+policy:
+  autodiscovery-id: 17421577
+  
 
 json:
   logger:
