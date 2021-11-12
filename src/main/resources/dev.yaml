@@ -26,7 +26,7 @@ soap:
   reconnection-strategy-attempts : "2"
   
 policy:
-  autodiscovery-id: 17421577
+  autodiscovery-id: "17421577"
   
 
 json:
