@@ -39,7 +39,7 @@ output application/json
 	<flow
 		name="GET\movies"
 		doc:id="e69fa723-e140-4524-9706-d17747089630"
-	>
+	initialState="stopped">
 		<json-logger:logger doc:name="Start Log" doc:id="70c7c058-86c3-43eb-ac0f-3d31f6665736" config-ref="JSON_Logger_Config" message="Request received for GET/movies endpoint"/>
 		<set-variable
 			value='#[%dw 2.0&#10;&#10;&#10;&#10;---&#10;&#10;if(attributes.queryParams.city== "Mumbai" )&#10;&#10;"select movieID, movieName, rating from movie where movieID in ( 1,2,3,4)"&#10;&#10;else if (attributes.queryParams.city== "Pune")&#10;&#10;"select movieID, movieName, rating from movie where movieID in ( 1,2,3,5)"&#10;&#10;else "select movieID, movieName, rating from movie where movieID in ( 1,2,3,4,5)"]'
