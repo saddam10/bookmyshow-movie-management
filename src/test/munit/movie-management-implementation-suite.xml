@@ -15,6 +15,9 @@
 		name="GET\movies-test"
 		doc:id="ea9c440a-c9f0-4bde-a47d-8c05c1efed11"
 	>
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="get:\movies:bookmyshow-config" />
+		</munit:enable-flow-sources>
 		<munit:behavior>
 			<munit-tools:mock-when
 				doc:name="Mock Select"
@@ -787,7 +790,7 @@ assert_expression_payload::main({payload: payload, attributes: attributes, vars:
 		name="DB-CONNECTIVITY-GET\movies-Error-Testing"
 		doc:id="e26a6057-3c22-4e96-a864-5892ceb39db0"
 		description="connectivity error"
-	>
+	expectedErrorType="DB:CONNECTIVITY">
 		<munit:behavior>
 			<munit-tools:mock-when
 				doc:name="Mock When APIKIT:NOT_FOUND"
@@ -819,69 +822,24 @@ assert_expression_payload::main({payload: payload, attributes: attributes, vars:
 			<munit-tools:verify-call
 				doc:name="Verify call"
 				doc:id="f9fca7ab-e801-4a5b-ac4f-e8257adb1937"
-				processor="flow-ref"
+				processor="ee:transform"
 				atLeast="1"
 			>
-				<munit-tools:with-attributes>
-					<munit-tools:with-attribute
-						whereValue="7b6da58c-7920-46a9-a9e7-a8d46c5efe97"
-						attributeName="doc:id" />
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="23522936-edc1-41aa-8805-7401eb4a10f9" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 			</munit-tools:verify-call>
 
 		</munit:validation>
 	
 </munit:test>
-	<munit:test
-		name="WSC:CONNECTIVITY-POST\bookings-Error-Testing"
-		doc:id="e8fc0d95-634f-4655-a941-98d8b221f5de"
-		description="connectivity error"
-	>
-		<munit:behavior>
-			<munit-tools:mock-when
-				doc:name="Mock When WSC:CONNECTIVITY"
-				doc:id="04ba1ea8-9471-4eae-b16e-6894b2ff831f"
-				processor="db:select"
-			>
-				<munit-tools:with-attributes>
-					<munit-tools:with-attribute
-						whereValue="1ada460c-08cd-42e5-bc4b-bd626e7e8587"
-						attributeName="doc:id" />
-				</munit-tools:with-attributes>
-				<munit-tools:then-return >
-					<munit-tools:payload value="#[output application/java --- []]" mediaType="application/java" encoding="UTF-8" />
-					<munit-tools:error typeId="WSC:CONNECTIVITY" />
-				</munit-tools:then-return>
-			
-</munit-tools:mock-when>
-		</munit:behavior>
-		<munit:execution>
-			<flow-ref
-				doc:name="Flow-ref to POST\bookings"
-				doc:id="32bf937c-341a-465f-ada0-c6ade947f803"
-				name="POST\bookings" />
-		</munit:execution>
-		<munit:validation>
-			<munit-tools:verify-call
-				doc:name="Verify call"
-				doc:id="3cbb8fa6-3d4a-42ad-bb04-a52c57bd87a2"
-				processor="flow-ref"
-				atLeast="1"
-			>
-				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="2d7dbc97-81cf-4f63-978a-81855246f24f" attributeName="doc:id" />
-				</munit-tools:with-attributes>
-
-			</munit-tools:verify-call>
-		</munit:validation>
-	</munit:test>
 	
 
 	<munit:test
 		name="WSC:CONNECTIVITY-GET\discounts-Error-Testing"
 		doc:id="d6db8ef7-aa9c-45e2-980d-2a49aad72e4c"
 		description="connectivity error"
-	>
+	expectedErrorType="WSC:CONNECTIVITY">
 		<munit:behavior>
 			<munit-tools:mock-when
 				doc:name="Mock When GET\discounts"
@@ -908,11 +866,54 @@ assert_expression_payload::main({payload: payload, attributes: attributes, vars:
 			<munit-tools:verify-call
 				doc:name="Verify call"
 				doc:id="fe3660bb-e865-446c-9313-a640ba00b516"
-				processor="flow-ref"
+				processor="ee:transform"
 				atLeast="1"
 			>
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="93b0b11e-9c01-4410-bc56-c23f52ddd165" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="46fc472a-e334-4d30-937b-24c178a0b878" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+
+
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	
+		<munit:test
+		name="DB:BAD_SQL_SYNTAX-GET\movies-Error-Testing"
+		doc:id="ca739809-027f-4057-95b7-26bae2e5ad28"
+		description="connectivity error"
+	expectedErrorType="DB:BAD_SQL_SYNTAX">
+		<munit:behavior>
+			<munit-tools:mock-when
+				doc:name="Mock When GET\movies"
+				doc:id="cd564697-5176-4dd7-8906-75653687f211"
+				processor="db:select"
+			>
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1ada460c-08cd-42e5-bc4b-bd626e7e8587" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- []]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:error typeId="DB:BAD_SQL_SYNTAX" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<flow-ref
+				doc:name="Flow-ref to GET\movies"
+				doc:id="448ecc93-8e18-4910-9e39-5579fb193e9f"
+				name="GET\movies" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call
+				doc:name="Verify call"
+				doc:id="f96d1f68-a5f7-4c01-ad39-fe3ee3d14da4"
+				processor="ee:transform"
+				atLeast="1"
+			>
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d0f9f572-9d39-4bea-b1e4-41e965cc2f9f" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 
 

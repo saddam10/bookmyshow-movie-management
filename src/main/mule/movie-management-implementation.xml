@@ -11,31 +11,7 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
 	
 	
-	<sub-flow
-		name="Error-Logger"
-		doc:id="d87bbe10-1c07-4841-b456-21cc105537f5"
-	>
-		<ee:transform
-			doc:name="Transform Message"
-			doc:id="d2707fdd-65cc-463c-9ea8-75a62edb887f"
-		>
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-	message: error.errorMessage,
-	description: error.description,
-	errorType : error.errorType.identifier
-}]]></ee:set-payload>
-			</ee:message>
-			<ee:variables>
-				<ee:set-variable variableName="httpStatus"><![CDATA[500]]></ee:set-variable>
-			</ee:variables>
-		</ee:transform>
-		<json-logger:logger doc:name="Error Log" doc:id="90f63a14-a2dd-4f1f-9174-f316a7086d29" config-ref="JSON_Logger_Config" message="Error response" tracePoint="EXCEPTION"/>
-	
-</sub-flow>
+
 	<flow
 		name="GET\movies"
 		doc:id="e69fa723-e140-4524-9706-d17747089630">
@@ -64,19 +40,6 @@ payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<json-logger:logger doc:name="End Log" doc:id="977a1207-d37a-4206-9de9-5c1815b994b0" config-ref="JSON_Logger_Config" tracePoint="END" message="Response for GET/movies endpoint"/>
-		<error-handler>
-			<on-error-continue
-				enableNotifications="true"
-				logException="true"
-				doc:name="On Error Continue"
-				doc:id="908b4171-1db0-4088-8e26-c0c9a68577a5"
-			>
-				<flow-ref
-					doc:name="Error Logger"
-					doc:id="7b6da58c-7920-46a9-a9e7-a8d46c5efe97"
-					name="Error-Logger" />
-			</on-error-continue>
-		</error-handler>
 	</flow>
 	<flow
 		name="GET\movie-details"
@@ -106,19 +69,6 @@ payload[0]]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<json-logger:logger doc:name="End Log" doc:id="bfd61e58-e3b6-4607-af2d-e8b7215842fd" config-ref="JSON_Logger_Config" tracePoint="END" message="Response for GET/movies/{movie_id} endpoint"/>
-		<error-handler>
-			<on-error-continue
-				enableNotifications="true"
-				logException="true"
-				doc:name="On Error Continue"
-				doc:id="1a17cd82-5637-429f-9799-78a096c41c6b"
-			>
-				<flow-ref
-					doc:name="Error-Logger"
-					doc:id="2fe57cea-25fc-4a39-9b7b-965d32c2da86"
-					name="Error-Logger" />
-			</on-error-continue>
-		</error-handler>
 	</flow>
 	<flow
 		name="POST\schedules"
@@ -170,19 +120,6 @@ payload map {
 			</ee:message>
 		</ee:transform>
 		<json-logger:logger doc:name="End Log" doc:id="33797459-daba-4c05-aa19-a669f36b9ac3" config-ref="JSON_Logger_Config" tracePoint="END" message="Response for GET/schedules endpoint"/>
-		<error-handler>
-			<on-error-continue
-				enableNotifications="true"
-				logException="true"
-				doc:name="On Error Continue"
-				doc:id="b646aa71-0c20-4276-b0fa-56002f2b921f"
-			>
-				<flow-ref
-					doc:name="Error-Logger"
-					doc:id="37795150-af06-4274-9cbd-1d9fe04279ef"
-					name="Error-Logger" />
-			</on-error-continue>
-		</error-handler>
 	</flow>
 	<flow
 		name="POST\bookings"
@@ -278,19 +215,6 @@ payload.body.bookTicketResponse]]></ee:set-payload>
 			</otherwise>
 		</choice>
 		<json-logger:logger doc:name="End Log" doc:id="ffc4de10-069d-4716-aca8-1a5180d70376" config-ref="JSON_Logger_Config" tracePoint="END" message="Response for GET/bookings endpoint"/>
-		<error-handler>
-			<on-error-continue
-				enableNotifications="true"
-				logException="true"
-				doc:name="On Error Continue"
-				doc:id="8e9b03e2-9aaa-45fe-921c-f0ba4db67523"
-			>
-				<flow-ref
-					doc:name="Error-Logger"
-					doc:id="2d7dbc97-81cf-4f63-978a-81855246f24f"
-					name="Error-Logger" />
-			</on-error-continue>
-		</error-handler>
 	</flow>
 	<flow
 		name="GET\discounts"
@@ -328,19 +252,6 @@ payload.body]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<json-logger:logger doc:name="End Log" doc:id="1b079ec0-b7cd-4edf-88e6-dda937ad0661" config-ref="JSON_Logger_Config" tracePoint="END" message="Response for GET/discounts endpoint"/>
-		<error-handler>
-			<on-error-continue
-				enableNotifications="true"
-				logException="true"
-				doc:name="On Error Continue"
-				doc:id="714e3290-464f-44eb-aeb7-ae0cb3fb1f08"
-			>
-				<flow-ref
-					doc:name="Error-Logger"
-					doc:id="93b0b11e-9c01-4410-bc56-c23f52ddd165"
-					name="Error-Logger" />
-			</on-error-continue>
-		</error-handler>
 	</flow>
 	
 	
